@@ -1,25 +1,19 @@
-import { getProviders, useSession } from 'next-auth/react'
-import { OAuthSignIn } from 'src/views/auth'
+import { useSession } from "next-auth/react";
+import { signIn } from "next-auth/react";
 
-const LoginPage = ({ providers }) => {
-    const { status } = useSession()
+const LoginPage = () => {
+  const { data, status } = useSession();
+  console.log("sessionData", data);
 
-    if (status === 'authenticated') {
-        return <div> You are logged in!</div>
-    }
+  if (status === "authenticated") {
+    return <div> You are logged in!</div>;
+  }
 
-    return (
-        <div>
-            {'Login via OAuth -> Google'}
-            <OAuthSignIn providers={providers} />
-        </div>
-    )
-}
-export default LoginPage
-
-export async function getServerSideProps(context) {
-    const providers = await getProviders()
-    return {
-        props: { providers },
-    }
-}
+  return (
+    <div>
+      {"Login via OAuth -> Google"}
+      <button onClick={() => signIn("google")}>Sign in with Google</button>
+    </div>
+  );
+};
+export default LoginPage;
